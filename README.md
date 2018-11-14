@@ -4,19 +4,15 @@
 # 环境配置
 环境需求： 
 
-  windows
-  
-  python3.6
-  
-  模拟器:网易MuMu模拟器(理论上可更换)
-  
-  客户端:安卓哔哩哔哩服
+    windows
+    python3.6
+    模拟器:网易MuMu模拟器(理论上可更换)
+    客户端:安卓哔哩哔哩服
 
 python包
 
-  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pillow
-  
-  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pywin32
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pillow
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pywin32
   
 # 注意事项
 
