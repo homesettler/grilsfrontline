@@ -16,7 +16,8 @@ def compare_image(img1,img2):
     h1 = img1.histogram()
     h2 = img2.histogram()
     result = math.sqrt(reduce(operator.add,list(map(lambda a,b:(a-b)**2,h1,h2)))/len(h1))
-    if result < 0.5:
+
+    if result < 50.00:
         return True
     else:
         return False
@@ -38,7 +39,7 @@ def get_image(box):
 
 #获取模拟器窗口四个边角的位置，理论上可以通过改titlename来选择别的模拟器
 def get_window():
-    titlename = "NemuPlayer"
+    titlename = "少女前线 - MuMu模拟器"
     hwnd = win32gui.FindWindow(None,titlename)
     if hwnd !=0:
         return win32gui.GetWindowRect(hwnd)
@@ -130,14 +131,14 @@ def isPage(PAGE,PAGE_SIZE):
     img2 = get_image(PAGE_SIZE)
     return compare_image(img1,img2)
 
-PING = 10
+PING = 3
 
 MAIN_MENU = "main_menu.png"
 MAIN_MENU_SIZE = (0.65,0.5,1,0.8)
 
 COMBAT_BUTTON = (0.75,0.65)
 COMBAT_MENU = "combat_menu.png"
-COMBAT_MENU_SIZE = (0,0,0.4,0.1)
+COMBAT_MENU_SIZE = (0,0.06,0.4,0.16)
 COMBAT_MISSION_BUTTON = (0.05,0.22)
 RETURN_TO_BASE_BUTTON = (0.05,0.1)
 COMBAT_MISSION_0 = (0.2,0.22)
@@ -165,7 +166,7 @@ def main_menu_to_combat():
     time.sleep(PING)
 
 COMBAT_FIELD = "combat_feild.png"
-COMBAT_FIELD_SIZE = (0,0,0.4,0.1)
+COMBAT_FIELD_SIZE = (0,0.06,0.4,0.16)
 SET_BUTTON = (0.9,0.9)
 POINT_M16A1 = (0.3,0.5)
 REPAIR_COMFIRM = (0.7,0.7)
@@ -211,11 +212,13 @@ def supply_airport():
 
 
 LEFT_POINT_4 = "LEFT_POINT_4.png"
-LEFT_POINT_4_SIZE = (0.75, 0.8, 0.85, 1)
+LEFT_POINT_4_SIZE = (0.75, 0.8, 0.85, 0.92)
 LEFT_POINT_0 = "LFET_POINT_0.png"
-LEFT_POINT_0_SIZE = (0.75, 0.8, 0.85, 1)
+LEFT_POINT_0_SIZE = (0.75, 0.8, 0.85, 0.92)
 LEFT_POINT_3 = "LFET_POINT_3.png"
-LEFT_POINT_3_SIZE = (0.75, 0.8, 0.85, 1)
+LEFT_POINT_3_SIZE = (0.75, 0.8, 0.85, 0.92)
+LEFT_POINT_1 = "LFET_POINT_1.png"
+LEFT_POINT_1_SIZE = (0.75, 0.8, 0.85, 0.92)
 PLAN_BUTTON = (0.05,0.82)
 
 POINT_STEP_1 = (0.39,0.35)
@@ -227,11 +230,11 @@ POINT_STEP_6 = (0.78,0.40)
 START_PLAN_BUTTON = (0.9,0.9)
 END_TURN_BUTTON = (0.9,0.9)
 def plan_turn_1():
-    waiting_time = 200
+    waiting_time = 120
     time.sleep(PING)
     i = 0
     while not isPage(LEFT_POINT_4, LEFT_POINT_4_SIZE):
-        time.sleep(1)
+        time.sleep(3)
         i = i + 1
         if i >= 20:
             exit(-1)
@@ -256,11 +259,11 @@ def plan_turn_1():
     return
 
 def plan_turn_2():
-    waiting_time = 200
+    waiting_time = 90
     time.sleep(PING)
     i = 0
     while not isPage(LEFT_POINT_3, LEFT_POINT_3_SIZE):
-        time.sleep(1)
+        time.sleep(3)
         i = i + 1
         if i >= 20:
             exit(-1)
@@ -270,33 +273,145 @@ def plan_turn_2():
     mouse_click(POINT_STEP_6)
     mouse_click(START_PLAN_BUTTON)
     time.sleep(waiting_time)
-    while not isPage(LEFT_POINT_0, LEFT_POINT_0_SIZE):
+    while not isPage(LEFT_POINT_1, LEFT_POINT_1_SIZE):
         time.sleep(1)
         i = i + 1
         if i >= 20:
             exit(-1)
     mouse_click(END_TURN_BUTTON)
-    time.sleep(5)
+    time.sleep(10)
     mouse_click(END_TURN_BUTTON)
     time.sleep(5)
     mouse_click(END_TURN_BUTTON)
     time.sleep(5)
     mouse_click(END_TURN_BUTTON)
     time.sleep(5)
+    mouse_click(RETURN_TO_BASE_BUTTON)
+
+FORMATION_MENU = "formation_menu.png"
+FORMATION_MENU_SIZE = COMBAT_MENU_SIZE
+
+FORMATION_BUTTON = (0.95,0.65)
+ECHELON1_BUTTON = (0.05,0.2)
+ECHELON2_BUTTON = (0.05,0.35)
+FORMATION_PRESET_BUTTON = (0.95,0.85)
+PRESET_BUTTON = (0.98,0.4)
+PRESET_ECHELON1_BUTTON = (0.8,0.15)
+PRESET_ECHELON2_BUTTON = (0.8,0.30)
+PRESET_MENU = "preset_menu.png"
+PRESET_MENU_SIZE = (0.5,0.75,1,0.9)
+
+USE_PRESET_BUTTON = (0.9,0.8)
+COMFIRM_BUTTON = (0.95,0.8)
+
+FORCE_REPLACE_BUTTON = (0.45,0.55)
+FORCE_REPLACE = "force_replace.png"
+FORCE_REPLACE_SIZE = (0.42,0.5,0.57,0.6)
+FORCE_REPLACE_COMFIRM = (0.6,0.65)
+def change_echelon(main_echelon):
+    time.sleep(PING)
+    i = 0
+    while not isPage(MAIN_MENU,MAIN_MENU_SIZE):
+        time.sleep(2)
+        i = i+1
+        if i>=20:
+            exit(-1)
+    mouse_click(FORMATION_BUTTON)
+    time.sleep(PING)
+    i = 0
+    while not isPage(FORMATION_MENU,FORMATION_MENU_SIZE):
+        time.sleep(2)
+        i = i+1
+        if i>=20:
+            exit(-1)
+    if main_echelon==1:
+        mouse_click(ECHELON2_BUTTON)
+    mouse_click(FORMATION_PRESET_BUTTON)
+    mouse_click(PRESET_BUTTON)
+
+    if main_echelon==2:
+        mouse_click(PRESET_ECHELON1_BUTTON)
+    else:
+        mouse_click(PRESET_ECHELON2_BUTTON)
+
+    i = 0
+    while not isPage(PRESET_MENU,PRESET_MENU_SIZE):
+        time.sleep(2)
+        i = i+1
+        if i>=20:
+            exit(-1)
+
+    mouse_click(USE_PRESET_BUTTON)
+
+    if not isPage(FORCE_REPLACE,FORCE_REPLACE_SIZE):
+        mouse_click(FORCE_REPLACE_BUTTON)
+    mouse_click(FORCE_REPLACE_COMFIRM)
+
+    mouse_click(COMFIRM_BUTTON)
+
+    mouse_click(RETURN_TO_BASE_BUTTON)
+    return
+
+FACTORY_BUTTON = (0.95,0.45)
+FACTORY_MENU = "factory_menu.png"
+FACTORY_MENU_SIZE = COMBAT_MENU_SIZE
+
+RETIRE_BUTTON = (0.05,0.6)
+CHOOSE_DOLL_BUTTON = (0.3,0.3)
+AUTO_SELECT_BUTTON = (0.95,0.8)
+RETIRE_T_DOLL_TIME = 5
+def t_doll_retire(time_count):
+    if time_count==0 or time_count%RETIRE_T_DOLL_TIME!=0:
+        return
+    mouse_click(FACTORY_BUTTON)
+    time.sleep(5)
+    i=0
+    while not isPage(FACTORY_MENU,FACTORY_MENU_SIZE):
+        time.sleep(2)
+        i = i+1
+        if i>=20:
+            exit(-1)
+    mouse_click(RETIRE_BUTTON)
+
+    mouse_click(CHOOSE_DOLL_BUTTON)
+    time.sleep(5)
+    mouse_click(AUTO_SELECT_BUTTON)
+    time.sleep(2)
+    mouse_click(AUTO_SELECT_BUTTON)
+    i = 0
+    while not isPage(FACTORY_MENU, FACTORY_MENU_SIZE):
+        time.sleep(2)
+        i = i + 1
+        if i >= 20:
+            exit(-1)
+    mouse_click(AUTO_SELECT_BUTTON)
+
+    mouse_click(RETURN_TO_BASE_BUTTON)
 
 
 if __name__=='__main__':
     time.sleep(5)
-    '''
+    main_echelon = 1
+    time_count = 0
+    is_first = True
     initImageList()
-
-    mouse_pos_init()
-    if not isPage(MAIN_MENU,MAIN_MENU_SIZE):
-        exit(-2)
-
-    main_menu_to_combat()
-    set_echelon(False,1,True)
-    '''
-    #supply_airport()
-    #plan_turn_1()
-    mouse_click(END_TURN_BUTTON)
+    while True:
+        mouse_pos_init()
+        if not isPage(MAIN_MENU,MAIN_MENU_SIZE):
+            exit(-2)
+        main_menu_to_combat()
+        if time_count!=0 and time_count%3==0:
+            set_echelon(is_first,main_echelon,True)
+        else:
+            set_echelon(is_first,main_echelon,False)
+        supply_airport()
+        plan_turn_1()
+        plan_turn_2()
+        change_echelon(main_echelon)
+        if main_echelon==1:
+            main_echelon = 2
+        else:
+            main_echelon = 1
+        is_first = False
+        time_count = time_count+1
+        t_doll_retire(time_count)
